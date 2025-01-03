@@ -16,9 +16,8 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 def load_config() -> Dict[str, Any]:
     """Load proof configuration from environment variables."""
     config = {
-        'dlp_id': 1234,  # Set your own DLP ID here
+        'dlp_id': int(os.environ.get('DLP_ID', '0')) or 1234,
         'input_dir': INPUT_DIR,
-        'user_email': os.environ.get('USER_EMAIL', None),
     }
     logging.info(f"Using config: {json.dumps(config, indent=2)}")
     return config
@@ -38,7 +37,7 @@ def run() -> None:
 
     output_path = os.path.join(OUTPUT_DIR, "results.json")
     with open(output_path, 'w') as f:
-        json.dump(proof_response.dict(), f, indent=2)
+        json.dump(proof_response.model_dump(), f, indent=2)
     logging.info(f"Proof generation complete: {proof_response}")
 
 
