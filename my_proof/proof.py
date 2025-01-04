@@ -16,6 +16,7 @@ class Proof:
         """Generate proofs for all input files."""
         logging.info("Starting proof generation")
 
+        schema_matches = False
         # Iterate through files and calculate data validity
         for input_filename in os.listdir(self.config['input_dir']):
             input_file = os.path.join(self.config['input_dir'], input_filename)
