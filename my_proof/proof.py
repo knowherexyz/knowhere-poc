@@ -19,10 +19,14 @@ class Proof:
         schema_matches = False
         # Iterate through files and calculate data validity
         for input_filename in os.listdir(self.config['input_dir']):
+            logging.info(f"Checking file: {input_filename}")
             input_file = os.path.join(self.config['input_dir'], input_filename)
+
             if os.path.splitext(input_file)[1].lower() == '.json':
                 with open(input_file, 'r') as f:
-                    input_data = json.load(f)
+                    json_content = f.read()
+                    logging.info(f"Validating file: {json_content[:50]}...")
+                    input_data = json.loads(json_content)
                     schema_matches = self.validate_schema(input_data)
 
         # Calculate proof-of-contribution scores: https://docs.vana.org/vana/core-concepts/key-elements/proof-of-contribution/example-implementation
@@ -68,9 +72,9 @@ class Proof:
             return True
             
         except jsonschema.exceptions.ValidationError as e:
-            logging.error(f"Schema validation error: {str(e)}")
+            logging.info(f"Schema validation error: {str(e)}")
             return False
         except Exception as e:
-            logging.error(f"Schema validation failed")
+            logging.info(f"Schema validation failed")
             return False
 
