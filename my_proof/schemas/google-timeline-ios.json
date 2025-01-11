@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Google Timeline iOS Schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "startTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "endTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "visit": {
+        "type": "object",
+        "properties": {
+          "hierarchyLevel": {
+            "type": "string"
+          },
+          "probability": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+$"
+          },
+          "topCandidate": {
+            "type": "object",
+            "properties": {
+              "probability": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+$"
+              },
+              "semanticType": {
+                "type": "string",
+                "enum": ["Home", "Unknown", "Searched Address"]
+              },
+              "placeID": {
+                "type": "string"
+              },
+              "placeLocation": {
+                "type": "string",
+                "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+              }
+            },
+            "required": [
+              "probability",
+              "semanticType",
+              "placeID",
+              "placeLocation"
+            ]
+          }
+        },
+        "required": ["hierarchyLevel", "topCandidate", "probability"]
+      },
+      "activity": {
+        "type": "object",
+        "properties": {
+          "probability": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+$"
+          },
+          "end": {
+            "type": "string",
+            "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+          },
+          "start": {
+            "type": "string",
+            "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+          },
+          "topCandidate": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["in passenger vehicle"]
+              },
+              "probability": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+$"
+              }
+            },
+            "required": ["type", "probability"]
+          },
+          "distanceMeters": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+$"
+          }
+        },
+        "required": [
+          "probability",
+          "end",
+          "start",
+          "topCandidate",
+          "distanceMeters"
+        ]
+      },
+      "timelinePath": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "point": {
+              "type": "string",
+              "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+            },
+            "durationMinutesOffsetFromStartTime": {
+              "type": "string",
+              "pattern": "^\\d+$"
+            }
+          },
+          "required": ["point", "durationMinutesOffsetFromStartTime"]
+        }
+      }
+    },
+    "required": ["startTime", "endTime"]
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Google Timeline Android Schema",
+  "type": "object",
+  "properties": {
+    "semanticSegments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          },
+          "startTimeTimezoneUtcOffsetMinutes": {
+            "type": "integer"
+          },
+          "endTimeTimezoneUtcOffsetMinutes": {
+            "type": "integer"
+          },
+          "timelinePath": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "point": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string"
+                }
+              },
+              "required": ["point"]
+            }
+          },
+          "activity": {
+            "type": "object",
+            "properties": {
+              "distanceMeters": {
+                "type": "number"
+              },
+              "probability": {
+                "type": "number"
+              },
+              "start": {
+                "type": "object",
+                "properties": {
+                  "latLng": {
+                    "type": "string"
+                  }
+                },
+                "required": ["latLng"]
+              },
+              "end": {
+                "type": "object",
+                "properties": {
+                  "latLng": {
+                    "type": "string"
+                  }
+                },
+                "required": ["latLng"]
+              },
+              "topCandidate": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "probability": {
+                    "type": "number"
+                  }
+                }
+              },
+              "parking": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "latLng": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["latLng"]
+                  },
+                  "startTime": {
+                    "type": "string"
+                  }
+                },
+                "required": ["location", "startTime"]
+              }
+            }
+          },
+          "visit": {
+            "type": "object",
+            "properties": {
+              "hierarchyLevel": {
+                "type": "integer"
+              },
+              "probability": {
+                "type": "number"
+              },
+              "isTimelessVisit": {
+                "type": "boolean"
+              },
+              "topCandidate": {
+                "type": "object",
+                "properties": {
+                  "placeId": {
+                    "type": "string"
+                  },
+                  "semanticType": {
+                    "type": "string"
+                  },
+                  "probability": {
+                    "type": "number"
+                  },
+                  "placeLocation": {
+                    "type": "object",
+                    "properties": {
+                      "latLng": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["latLng"]
+                  }
+                }
+              }
+            }
+          },
+          "timelineMemory": {
+            "type": "object",
+            "properties": {
+              "trip": {
+                "type": "object",
+                "properties": {
+                  "distanceFromOriginKms": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "destinations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "object",
+                      "properties": {
+                        "placeId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["placeId"]
+                    }
+                  },
+                  "required": ["identifier"]
+                }
+              }
+            }
+          }
+        },
+        "required": ["startTime", "endTime"]
+      }
+    },
+    "rawSignals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "activityRecord": {
+            "type": "object"
+          },
+          "position": {
+            "type": "object"
+          },
+          "wifiScan": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "userLocationProfile": {
+      "type": "object",
+      "properties": {
+        "frequentPlaces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "placeId": {
+                "type": "string"
+              },
+              "placeLocation": {
+                "type": "string",
+                "pattern": "^-?\\d+(\\.\\d+)?°, -?\\d+(\\.\\d+)?°$"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": ["placeId", "placeLocation", "label"]
+          }
+        }
+      }
+    }
+  },
+  "required": ["semanticSegments"]
+}

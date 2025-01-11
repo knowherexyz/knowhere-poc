@@ -27,7 +27,7 @@ class Proof:
                     json_content = f.read()
                     logging.info(f"Validating file: {json_content[:50]}...")
                     input_data = json.loads(json_content)
-                    schema_matches = self.validate_schema(input_data)
+                    schema_type, schema_matches = self.validate_schema(input_data)
 
         # Calculate proof-of-contribution scores: https://docs.vana.org/vana/core-concepts/key-elements/proof-of-contribution/example-implementation
         self.proof_response.ownership = 0  # Does the data belong to the user? Or is it fraudulent?
@@ -41,6 +41,7 @@ class Proof:
 
         # Additional (public) properties to include in the proof about the data
         self.proof_response.attributes = {
+            'schema_type': schema_type,
             'schema_matches': schema_matches,
         }
 
@@ -51,7 +52,7 @@ class Proof:
 
         return self.proof_response
 
-    def validate_schema(self, input_data: Dict[str, Any]) -> bool:
+    def validate_schema(self, input_data: Dict[str, Any]) -> tuple[str, bool]:
         """
         Validate input data against the google-timeline schema using jsonschema.
         
@@ -59,22 +60,29 @@ class Proof:
             input_data: The JSON data to validate
             
         Returns:
-            bool: True if schema matches, False otherwise
+            tuple[str, bool]: A tuple containing (schema_type, is_valid)
+            where schema_type is either 'ios' or 'android'
+            and is_valid indicates if the schema validation passed
         """
         try:
+            schema_type = 'google-timeline-android.json'
+            # iPhones only give the semanticSegments array
+            if isinstance(input_data, list):
+                schema_type = 'google-timeline-ios.json'
+            
             # Load the schema
-            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', 'google-timeline.json')
+            schema_path = os.path.join(os.path.dirname(__file__), 'schemas', schema_type)
             with open(schema_path, 'r') as f:
                 schema = json.load(f)
                 
             # Validate against schema
             jsonschema.validate(instance=input_data, schema=schema)
-            return True
+            return schema_type, True
             
         except jsonschema.exceptions.ValidationError as e:
-            logging.info(f"Schema validation error: {str(e)}")
-            return False
+            logging.error(f"Schema validation error: {str(e)}")
+            return schema_type, False
         except Exception as e:
-            logging.info(f"Schema validation failed")
-            return False
+            logging.error(f"Schema validation failed: {str(e)}")
+            return schema_type, False
 

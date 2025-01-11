@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 def load_config() -> Dict[str, Any]:
     """Load proof configuration from environment variables."""
     config = {
-        'dlp_id': int(os.environ.get('DLP_ID', '27')),
+        'dlp_id': int(os.environ.get('DLP_ID', '16')),
         'input_dir': INPUT_DIR,
     }
     logging.info(f"Using config: {json.dumps(config, indent=2)}")
