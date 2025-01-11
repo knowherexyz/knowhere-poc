@@ -1,4 +1,4 @@
-# Vana Satya Proof of Contribution - Python Template
+# Knowhere Proof of Contribution
 
 This repository serves as a template for creating a [proof of contribution](https://docs.vana.org/vana/core-concepts/key-elements/proof-of-contribution) tasks using Python. It is executed on Vana's Satya Network, a group of highly confidential and secure compute nodes that can validate data without revealing its contents to the node operator.
 
@@ -20,9 +20,10 @@ This template provides a basic structure for building proof tasks that:
   "quality": 0.6024096385542169, // A score between 0 and 1 to show the quality of the file
   "uniqueness": 0, // A score between 0 and 1 to show unique the file is, compared to others in the DLP
   "attributes": { // Custom attributes that can be added to the proof to provide extra context about the encrypted file
-    "total_score": 0.5,
-    "score_threshold": 0.83,
-    "email_verified": true
+    "schema_type": "google-timeline-ios.json",
+  },
+  "metadata": {
+    "schema_type": "google-timeline-ios.json"
   }
 }
 ```
@@ -54,7 +55,8 @@ The main proof logic is implemented in `my_proof/proof.py`. To customize it, upd
 
 The proof can be configured using environment variables:
 
-- `USER_EMAIL`: The email address of the data contributor, to verify data ownership
+- `OWNER_ADDRESS`: The address of the data contributor, to verify data ownership.
+- `RPC_URL`: The URL of the Vana RPC node to use for the proof.
 
 If you want to use a language other than Python, you can modify the Dockerfile to install the necessary dependencies and build the proof task in the desired language.
 
@@ -68,7 +70,8 @@ docker run \
   --rm \
   --volume $(pwd)/input:/input \
   --volume $(pwd)/output:/output \
-  --env USER_EMAIL=user123@gmail.com \
+  --env OWNER_ADDRESS=0xE58daB7de0B2635E88d87dCE9b8c63F6DFa07071 \
+  --env RPC_URL=https://rpc.vana.org \
   my-proof
 ```
 

@@ -1,3 +1,4 @@
 pydantic
 requests
 jsonschema
+web3

@@ -17,6 +17,9 @@ def load_config() -> Dict[str, Any]:
     """Load proof configuration from environment variables."""
     config = {
         'dlp_id': int(os.environ.get('DLP_ID', '16')),
+        'dlp_contract_address': os.environ.get('DLP_CONTRACT_ADDRESS', '0x3B826122C4EBc127cba30f1d69417743FE652B15'),
+        'owner_address': os.environ.get('OWNER_ADDRESS', None),
+        'rpc_url': os.environ.get('RPC_URL', 'https://rpc.vana.org'),
         'input_dir': INPUT_DIR,
     }
     logging.info(f"Using config: {json.dumps(config, indent=2)}")

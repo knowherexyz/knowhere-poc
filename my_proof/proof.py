@@ -5,16 +5,24 @@ from typing import Dict, Any
 import jsonschema
 
 from my_proof.models.proof_response import ProofResponse
+from my_proof.utils.blockchain import BlockchainClient
 
 
 class Proof:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.proof_response = ProofResponse(dlp_id=config['dlp_id'])
+        self.blockchain_client = BlockchainClient(config)
 
     def generate(self) -> ProofResponse:
         """Generate proofs for all input files."""
         logging.info("Starting proof generation")
+        errors = []
+
+        # Get existing file count from blockchain
+        existing_file_count = self.blockchain_client.get_contributor_file_count()
+        if existing_file_count > 0:
+            errors.append(f"DUPLICATE_CONTRIBUTION")
 
         schema_matches = False
         # Iterate through files and calculate data validity
@@ -28,26 +36,31 @@ class Proof:
                     logging.info(f"Validating file: {json_content[:50]}...")
                     input_data = json.loads(json_content)
                     schema_type, schema_matches = self.validate_schema(input_data)
+                    if not schema_matches:
+                        errors.append(f"INVALID_SCHEMA")
 
-        # Calculate proof-of-contribution scores: https://docs.vana.org/vana/core-concepts/key-elements/proof-of-contribution/example-implementation
-        self.proof_response.ownership = 0  # Does the data belong to the user? Or is it fraudulent?
-        self.proof_response.quality = 1.0 if schema_matches else 0.0  # How high quality is the data?
-        self.proof_response.authenticity = 0  # How authentic is the data is (ie: not tampered with)? (Not implemented here)
-        self.proof_response.uniqueness = 0  # How unique is the data relative to other datasets? (Not implemented here)
+        # Calculate proof-of-contribution scores
+        self.proof_response.ownership = 0  
+        self.proof_response.quality = 1.0 if schema_matches else 0.0  
+        self.proof_response.authenticity = 0  
+        self.proof_response.uniqueness = 1 if existing_file_count == 0 else 0
 
         # Calculate overall score and validity
-        self.proof_response.score = self.proof_response.quality
-        self.proof_response.valid = self.proof_response.score >= 0.9
+        self.proof_response.score = 0.5 * self.proof_response.quality + 0.5 * self.proof_response.uniqueness
+        self.proof_response.valid = self.proof_response.score >= 0.9 and len(errors) == 0
 
         # Additional (public) properties to include in the proof about the data
         self.proof_response.attributes = {
             'schema_type': schema_type,
-            'schema_matches': schema_matches,
         }
+        
+        # Only include errors if there are any
+        if len(errors) > 0:
+            self.proof_response.attributes['errors'] = errors
 
         # Additional metadata about the proof, written onchain
         self.proof_response.metadata = {
-            'dlp_id': self.config['dlp_id'],
+            'schema_type': schema_type,
         }
 
         return self.proof_response
