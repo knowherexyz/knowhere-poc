@@ -39,7 +39,7 @@
               },
               "placeLocation": {
                 "type": "string",
-                "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+                "pattern": "^geo:-?\\d+\\.\\d+,-?\\d+\\.\\d+$"
               }
             },
             "required": [
@@ -61,11 +61,11 @@
           },
           "end": {
             "type": "string",
-            "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+            "pattern": "^geo:-?\\d+\\.\\d+,-?\\d+\\.\\d+$"
           },
           "start": {
             "type": "string",
-            "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+            "pattern": "^geo:-?\\d+\\.\\d+,-?\\d+\\.\\d+$"
           },
           "topCandidate": {
             "type": "object",
@@ -101,7 +101,7 @@
           "properties": {
             "point": {
               "type": "string",
-              "pattern": "^geo:\\d+\\.\\d+,-\\d+\\.\\d+$"
+              "pattern": "^geo:-?\\d+\\.\\d+,-?\\d+\\.\\d+$"
             },
             "durationMinutesOffsetFromStartTime": {
               "type": "string",
