@@ -1,18 +1,21 @@
 {
   "dlp_id": 16,
   "valid": false,
-  "score": 0.5,
+  "score": 0.0028063648603404313,
   "authenticity": 0,
   "ownership": 0,
-  "quality": 0.0,
-  "uniqueness": 1,
+  "quality": 0.5612729720680862,
+  "uniqueness": 0.0,
   "attributes": {
-    "schema_type": "google-timeline-ios.json",
+    "schema_type": "google-timeline-android.json",
+    "coordinates": 4683,
+    "unique_coordinates": 0,
     "errors": [
-      "INVALID_SCHEMA"
+      "UNVERIFIED_STORAGE_USER",
+      "DUPLICATE_CONTRIBUTION"
     ]
   },
   "metadata": {
-    "schema_type": "google-timeline-ios.json"
+    "schema_type": "google-timeline-android.json"
   }
 }

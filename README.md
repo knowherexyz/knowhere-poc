@@ -12,7 +12,7 @@ This template provides a basic structure for building proof tasks that:
 
 ```json
 {
-  "dlp_id": 1234, // DLP ID is found in the Root Network contract after the DLP is registered
+  "dlp_id": 16, // DLP ID is found in the Root Network contract after the DLP is registered
   "valid": false, // A single boolean to summarize if the file is considered valid in this DLP
   "score": 0.7614457831325301, // A score between 0 and 1 for the file, used to determine how valuable the file is. This can be an aggregation of the individual scores below.
   "authenticity": 1.0, // A score between 0 and 1 to rate if the file has been tampered with
@@ -73,6 +73,18 @@ docker run \
   --env OWNER_ADDRESS=0xE58daB7de0B2635E88d87dCE9b8c63F6DFa07071 \
   --env RPC_URL=https://rpc.vana.org \
   my-proof
+```
+
+Or directly with python:
+
+```bash
+# First time setup, create a virtual environment and install dependencies
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Run the proof
+python -m my_proof
 ```
 
 ## Running with Intel TDX
