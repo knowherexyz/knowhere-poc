@@ -201,7 +201,7 @@
                 "type": "string"
               }
             },
-            "required": ["placeId", "placeLocation", "label"]
+            "required": ["placeId", "placeLocation"]
           }
         }
       }

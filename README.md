@@ -71,7 +71,7 @@ docker run \
   --volume $(pwd)/input:/input \
   --volume $(pwd)/output:/output \
   --env OWNER_ADDRESS=0xE58daB7de0B2635E88d87dCE9b8c63F6DFa07071 \
-  --env RPC_URL=https://rpc.vana.org \
+  --env POSTGRES_URL="postgresql://..." \
   my-proof
 ```
 
@@ -98,7 +98,8 @@ docker run \
   --rm \
   --volume /path/to/input:/input \
   --volume /path/to/output:/output \
-  --env USER_EMAIL=user123@gmail.com \
+  --env OWNER_ADDRESS=0xE58daB7de0B2635E88d87dCE9b8c63F6DFa07071 \
+  --env POSTGRES_URL="postgresql://..." \
   my-proof
 ```
 
