@@ -72,7 +72,18 @@
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["in passenger vehicle"]
+                "enum": [
+                  "in passenger vehicle",
+                  "in tram",
+                  "in train",
+                  "in subway",
+                  "in bus",
+                  "in ferry",
+                  "walking",
+                  "running",
+                  "flying",
+                  "cycling"
+                ]
               },
               "probability": {
                 "type": "string",
